@@ -1,0 +1,29 @@
+{
+  "name": "kafkadispose",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "jest",
+    "build": "npx tsc",
+    "start": "node .",
+    "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" ",
+    "lint.fix": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix"
+  },
+  "author": "Joseph Fortman",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/jest": "^29.5.4",
+    "@typescript-eslint/eslint-plugin": "^6.4.1",
+    "@typescript-eslint/parser": "^6.4.1",
+    "eslint": "^8.48.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-prettier": "^5.0.0",
+    "jest": "^29.6.4",
+    "prettier": "^3.0.2",
+    "ts-jest": "^29.1.1",
+    "typescript": "^5.2.2"
+  },
+  "dependencies": {
+  }
+}
