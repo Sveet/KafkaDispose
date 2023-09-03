@@ -4,8 +4,16 @@ import { ConsumerParams, Message } from './types';
 import { HeartbeatManager } from './heartbeat';
 
 export class Consumer extends Readable {
-  private messages: Message[] = [];
   private consumer: KafkaConsumer
+
+  private messages: Message[] = [];
+  _read(size: number): void {
+    if(size && size < 0) return;
+    if(this.messages?.length > 0){
+      this.push(this.messages.slice(0, size))
+    }
+  }
+  
   async [Symbol.asyncDispose](): Promise<void> {
     try{
       await this.consumer.disconnect();
@@ -14,6 +22,7 @@ export class Consumer extends Readable {
       console.error(`Error disconnecting consumer ${this.params.consumerConfig.groupId} ${err}`)
     }
   }
+
   constructor(private kafka: Kafka, private params: ConsumerParams){
     super({objectMode: true});
     this.params.consumerConfig.allowAutoTopicCreation ??= false;
@@ -34,6 +43,7 @@ export class Consumer extends Readable {
       return this.restartConsumer();
     });
   }
+
   private async run() {
     const {consumerConfig, runConfig, topic, topics, partition, offset} = this.params;
     await this.consumer.connect()
@@ -80,13 +90,6 @@ export class Consumer extends Readable {
       await this.run();
     } catch (err) {
       console.error(`Failed to restart consumer ${this.params.consumerConfig.groupId}: ${err}`);
-    }
-  }
-
-  _read(size: number): void {
-    if(size && size < 0) return;
-    if(this.messages?.length > 0){
-      this.push(this.messages.slice(0, size))
     }
   }
 }
