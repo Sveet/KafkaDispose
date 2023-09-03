@@ -10,6 +10,14 @@ import { ProducerParams } from './types';
 
 export class Producer extends Writable {
   private producer: KafkaProducer;
+  async [Symbol.asyncDispose](): Promise<void> {
+    try {
+      await this.producer.disconnect();
+      console.debug(`Disconnected producer for ${this.params.topic}`);
+    } catch (err) {
+      console.error(`Error disconnecting producer for ${this.params.topic} ${err}`);
+    }
+  }
   constructor(
     private kafka: Kafka,
     private params: ProducerParams,
