@@ -1,4 +1,4 @@
-import {ConsumerConfig, ConsumerRunConfig, IHeaders} from 'kafkajs'
+import {ProducerConfig, ConsumerConfig, ConsumerRunConfig, IHeaders} from 'kafkajs'
 
 export type RunConfig = Pick<
   ConsumerRunConfig,
@@ -12,7 +12,12 @@ export type ConsumerParams = {
   partition?: number
   offset?: number
 }
-
+export type ProducerParams = {
+  topic: string;
+  config?: ProducerConfig;
+  bufferMessages?: number;
+  bufferTime_ms?: number;
+}
 export type Message = {
   partition: number;
   offset: string;
