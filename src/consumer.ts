@@ -8,9 +8,10 @@ export class Consumer extends Readable {
 
   private messages: Message[] = [];
   _read(size: number): void {
-    if (size && size < 0) return;
-    if (this.messages?.length > 0) {
-      this.push(this.messages.slice(0, size));
+    if (!size || size < 0) size = 1;
+    for (let i = 0; i < size; i++) {
+      const m = this.messages.shift();
+      if (m != null) this.push(m);
     }
   }
 
